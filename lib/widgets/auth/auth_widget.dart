@@ -110,7 +110,6 @@ class _FormWidgetState extends State<_FormWidget> {
     final login = _loginTextControl.text;
     final password = _passwordTextControl.text;
     if (login == "admin" && password == "admin") {
-      print("Welcome to this app");
       errorMassage = null;
       Navigator.of(context).pushReplacementNamed("/main_screen");
     } else {
