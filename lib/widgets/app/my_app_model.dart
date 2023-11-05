@@ -20,8 +20,12 @@ class MyAppModel extends ChangeNotifier {
     print("objectasdasd");
     await _sessionDataProvider.setSessionId(null);
     await _sessionDataProvider.setAccountId(null);
-    final context = GlobalContextHelper.state.currentContext;
-    Navigator.of(context!).pushNamedAndRemoveUntil(
-        MainNavigationRouteNames.auth, (route) => false);
+    resetSessionNav();
   }
+}
+
+void resetSessionNav() {
+  final context = GlobalContextHelper.state.currentContext;
+  Navigator.of(context!)
+      .pushNamedAndRemoveUntil(MainNavigationRouteNames.auth, (route) => false);
 }

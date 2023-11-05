@@ -15,14 +15,11 @@ class MovieDetailsWidget extends StatefulWidget {
 }
 
 class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
-
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //
-    // });
-    final movieModel = Provider.of<MovieDetailsViewModel>(context, listen: false);
+    final movieModel =
+        Provider.of<MovieDetailsViewModel>(context, listen: false);
     final appModel = Provider.of<MyAppModel>(context, listen: false);
     movieModel.onSessionExpaired = () => appModel.resetSession();
   }
@@ -30,9 +27,9 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    Provider.of<MovieDetailsViewModel>(context,listen: false).setupLocale(context);
+    Provider.of<MovieDetailsViewModel>(context, listen: false)
+        .setupLocale(context);
   }
-
 
   @override
   Widget build(BuildContext context) {

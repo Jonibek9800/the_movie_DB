@@ -66,9 +66,9 @@ class MovieDetailsViewModel extends ChangeNotifier {
 
     model._isFavorite = !model._isFavorite;
     try {
-      model._apiClient.markAsFavorite(
+      await model._apiClient.markAsFavorite(
         acountId: accountId,
-        sessionId: "sessionId",
+        sessionId: sessionId,
         mediaType: MediaType.Movie,
         mediaId: movieId,
         isFavorite: model._isFavorite,
@@ -77,7 +77,7 @@ class MovieDetailsViewModel extends ChangeNotifier {
     } on ApiClientException catch (e) {
       switch (e.type) {
         case ApiClientExceptionType.SessionExpaired:
-          await (onSessionExpaired ??= () {})();
+          await onSessionExpaired?.call();
           break;
         default:
           print(e);
