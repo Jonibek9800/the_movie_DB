@@ -4,42 +4,20 @@ import 'package:themoviedb/widgets/auth/auth_model.dart';
 
 import '../../Theme/app_button_style.dart';
 
-class AuthWidget extends StatefulWidget {
+class AuthWidget extends StatelessWidget {
   const AuthWidget({super.key});
 
-  @override
-  State<AuthWidget> createState() => _AuthWidgetState();
-}
-
-class _AuthWidgetState extends State<AuthWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            IconButton(
-                onPressed: () {
-                  print('back');
-                },
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                )),
-            const SizedBox(
-              width: 50,
-            ),
-            const Text(
-              "Login to your account",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-            ),
-          ],
+        title: const Text(
+          "Login to your account",
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
         ),
         backgroundColor: const Color.fromRGBO(3, 37, 65, 1),
+        centerTitle: true,
       ),
       body: ListView(
         children: const [_HeaderWidget()],
@@ -53,7 +31,6 @@ class _HeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const color = Color(0xFF01B4E4);
     const textStyle = TextStyle(fontSize: 16, color: Colors.black);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -99,7 +76,7 @@ class _FormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthViewModel _model = Provider.of<AuthViewModel>(context);
+    AuthViewModel model = context.read<AuthViewModel>();
 
     const color = Color(0xFF01B4E4);
     const textFieldDecoration = InputDecoration(
@@ -111,11 +88,6 @@ class _FormWidget extends StatelessWidget {
       isCollapsed: true,
     );
     const textStyle = TextStyle(fontSize: 16, color: Color(0xFF212529));
-    // String errorMessage () {
-    //   if(isValid) {
-    //     return "Invalid Password or login";
-    //   }
-    // }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,7 +103,7 @@ class _FormWidget extends StatelessWidget {
           height: 5,
         ),
         TextField(
-          controller: _model.model.loginTextControl,
+          controller: model.model.loginTextControl,
           decoration: textFieldDecoration,
         ),
         const SizedBox(
@@ -145,7 +117,7 @@ class _FormWidget extends StatelessWidget {
           height: 5,
         ),
         TextField(
-          controller: _model.model.passwordTextControl,
+          controller: model.model.passwordTextControl,
           decoration: textFieldDecoration,
           obscureText: true,
         ),
@@ -172,7 +144,6 @@ class _FormWidget extends StatelessWidget {
                 ),
                 child: const Text(
                   "Сбросить пароль",
-                  // style: TextStyle(color: Colors.blue),
                 ))
           ],
         )
@@ -191,11 +162,16 @@ class _AuthButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthViewModel _model = Provider.of<AuthViewModel>(context);
+    AuthViewModel model = context.watch<AuthViewModel>();
     final onPressed =
-    _model.model.canStartAuth == true ? () => _model.auth(context) : null;
-    final child = _model.model.isAuthProgress == true
-        ? const SizedBox(height: 15, width: 15, child: CircularProgressIndicator(strokeWidth: 2,))
+        model.model.canStartAuth ? () => model.auth(context) : null;
+    final child = model.model.isAuthProgress
+        ? const SizedBox(
+            height: 15,
+            width: 15,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ))
         : const Text("Войти");
     return Container(
       child: TextButton(
@@ -218,12 +194,12 @@ class _ErrorMassageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _model = Provider.of<AuthViewModel>(context);
-    if (_model.model.errorMassege == null) return const SizedBox.shrink();
+    final errorMassege = context.select((AuthViewModel m) => m.model.errorMassege);
+    if (errorMassege == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(bottom: 10, top: 10),
       child: Text(
-        "${_model.model.errorMassege}",
+        errorMassege,
         style: const TextStyle(color: Colors.red, fontSize: 17),
       ),
     );

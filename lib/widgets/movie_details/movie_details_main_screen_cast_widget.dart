@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:themoviedb/domain/api_client/api_client.dart';
+import 'package:themoviedb/domain/api_client/image_downloader.dart';
 import 'package:themoviedb/resources/resources.dart';
 import 'package:themoviedb/utils/extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,7 +15,7 @@ class MovieDetailsMainScreenCastWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<MovieDetailsViewModel>(context).model;
-
+    final imageDownloader = ImageDownloader();
     if(model.moviesCredits?.cast == null) {
       return const Center(
         child: Text("Нет актерского состава")
@@ -36,7 +36,7 @@ class MovieDetailsMainScreenCastWidget extends StatelessWidget {
           SizedBox(
             height: 330,
             child: Scrollbar(
-              radius: Radius.circular(15),
+              radius: const Radius.circular(15),
               child: ListView.builder(
                   itemCount: model.moviesCredits?.cast?.sortedTwentyList().length,
                   itemExtent: 130,
@@ -55,7 +55,7 @@ class MovieDetailsMainScreenCastWidget extends StatelessWidget {
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.1),
                                 blurRadius: 8,
-                                offset: Offset(0, 2),
+                                offset: const Offset(0, 2),
                               )
                             ]),
                         child: ClipRRect(
@@ -63,15 +63,15 @@ class MovieDetailsMainScreenCastWidget extends StatelessWidget {
                           // clipBehavior: Clip.hardEdge,
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                   height: 180,
                                   child: actor?.profilePath != null
                                       ?
                                   CachedNetworkImage(
-                                    imageUrl: ApiClient.imageUrl(actor?.profilePath ?? ""),
+                                    imageUrl: imageDownloader.imageUrl(actor?.profilePath ?? ""),
                                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                                         Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ) : const Image(
                                           fit: BoxFit.cover,
                                           image: AssetImage(AppImages.person))),

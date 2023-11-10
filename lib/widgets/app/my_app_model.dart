@@ -17,7 +17,6 @@ class MyAppModel extends ChangeNotifier {
   }
 
   Future<void> resetSession() async {
-    print("objectasdasd");
     await _sessionDataProvider.setSessionId(null);
     await _sessionDataProvider.setAccountId(null);
     resetSessionNav();

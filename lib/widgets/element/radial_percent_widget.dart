@@ -2,24 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-// class _ExampleState extends StatefulWidget {
-//   const _ExampleState({super.key});
-//
-//   @override
-//   State<_ExampleState> createState() => _ExampleStateState();
-// }
-//
-// class _ExampleStateState extends State<_ExampleState> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const RadialPercentWidget(child: null,);
-//   }
-// }
-
-// fillColor: Colors.blue,
-// lineColor: Colors.red,
-// freeColor: Colors.yellow,
-
 class RadialPercentWidget extends StatelessWidget {
   const RadialPercentWidget(
       {super.key,

@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/domain/entity/movie_credits.dart';
 import 'package:themoviedb/ui/navigator/main_navigator.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 
+import '../../domain/api_client/image_downloader.dart';
 import '../element/radial_percent_widget.dart';
 
 class MovieDetailsMainInfoWidget extends StatelessWidget {
@@ -24,18 +24,18 @@ class MovieDetailsMainInfoWidget extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(20, 15, 20, 0),
           child: _MoviesNameWidget(),
         ),
-        _ScoreWidget(),
+        const _ScoreWidget(),
         Container(
           color: const Color(0xFF1D1D1D),
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
           child: const _SummeryWidget(),
         ),
         Container(
-            padding: EdgeInsets.fromLTRB(15, 20, 0, 0),
+            padding: const EdgeInsets.fromLTRB(15, 20, 0, 0),
             alignment: Alignment.centerLeft,
             child: Text(
               model.model.moviesDatails?.tagline ?? '',
-              style: TextStyle(color: Colors.grey, fontSize: 17.6),
+              style: const TextStyle(color: Colors.grey, fontSize: 17.6),
             )),
         const _ReviewWidget(),
         const _PeopleWidget()
@@ -52,6 +52,7 @@ class _TopPostersWidget extends StatelessWidget {
     final model = Provider.of<MovieDetailsViewModel>(context);
     final backdropPath = model.model.moviesDatails?.backdropPath;
     final posterPath = model.model.moviesDatails?.posterPath;
+    final imageDownloader = ImageDownloader();
     return Stack(
       children: [
         Positioned(
@@ -62,13 +63,13 @@ class _TopPostersWidget extends StatelessWidget {
           // ApiClient.imageUrl(actor?.profilePath ?? "")
           child: backdropPath != null
               ? CachedNetworkImage(
-                  imageUrl: ApiClient.imageUrl(backdropPath),
+                  imageUrl: imageDownloader.imageUrl(backdropPath),
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                       Center(
                     child: CircularProgressIndicator(
                         value: downloadProgress.progress),
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 )
               : const Center(child: Text("Загрузка...")),
         ),
@@ -78,13 +79,13 @@ class _TopPostersWidget extends StatelessWidget {
           left: 20,
           child: posterPath != null
               ? CachedNetworkImage(
-                  imageUrl: ApiClient.imageUrl(posterPath),
+                  imageUrl: imageDownloader.imageUrl(posterPath),
                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                       Center(
                         child: CircularProgressIndicator(
                             value: downloadProgress.progress),
                       ),
-                  errorWidget: (context, url, error) => Icon(Icons.error))
+                  errorWidget: (context, url, error) => const Icon(Icons.error))
               : const Center(child: Text("Загрузка...")),
         ),
         Positioned(

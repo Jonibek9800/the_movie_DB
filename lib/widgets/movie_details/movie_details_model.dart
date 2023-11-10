@@ -1,13 +1,17 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:themoviedb/domain/api_client/api_client.dart';
+import 'package:themoviedb/configuration/configuration.dart';
+import 'package:themoviedb/domain/api_client/account_api_client.dart';
+import 'package:themoviedb/domain/api_client/movie_api_client.dart';
 import 'package:themoviedb/domain/entity/movie_credits.dart';
 import 'package:themoviedb/domain/entity/movie_details.dart';
 
+import '../../domain/api_client/apiClientException.dart';
 import '../../domain/data_providerss/session_data_provider.dart';
 
 class MovieDetailsModel {
-  final _apiClient = ApiClient();
+  final _apiClient = MovieApiClient();
+  final _accountApiClient = AccountApiClient();
   final _sessionDataProvider = SessionDataProvider();
 
   MoviesDatails? _moviesDatails;
@@ -47,16 +51,16 @@ class MovieDetailsViewModel extends ChangeNotifier {
   Future<void> loadDetails() async {
     final sessionId = await model._sessionDataProvider.getSessionId();
     model._moviesDatails =
-        await model._apiClient.movieDetails(movieId, model._locale);
+        await model._apiClient.movieDetails(movieId, model._locale, Configuration.apiKey);
     if (sessionId != null) {
       model._isFavorite =
-          await model._apiClient.isFavorite(movieId, sessionId ?? '');
+          await model._accountApiClient.isFavorite(movieId, sessionId ?? '');
     }
   }
 
   Future<void> loadMovieCredits() async {
     model._movieCredis =
-        await model._apiClient.movieCredits(movieId, model._locale);
+        await model._apiClient.movieCredits(movieId, model._locale, Configuration.apiKey);
   }
 
   Future<void> toggleFavorite() async {
@@ -66,17 +70,17 @@ class MovieDetailsViewModel extends ChangeNotifier {
 
     model._isFavorite = !model._isFavorite;
     try {
-      await model._apiClient.markAsFavorite(
+      await model._accountApiClient.markAsFavorite(
         acountId: accountId,
         sessionId: sessionId,
-        mediaType: MediaType.Movie,
+        mediaType: MediaType.movie,
         mediaId: movieId,
         isFavorite: model._isFavorite,
       );
       notifyListeners();
     } on ApiClientException catch (e) {
       switch (e.type) {
-        case ApiClientExceptionType.SessionExpaired:
+        case ApiClientExceptionType.sessionExpaired:
           await onSessionExpaired?.call();
           break;
         default:

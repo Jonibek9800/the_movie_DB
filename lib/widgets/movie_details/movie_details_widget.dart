@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:themoviedb/widgets/app/my_app_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_main_screen_cast_widget.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 
@@ -15,14 +14,14 @@ class MovieDetailsWidget extends StatefulWidget {
 }
 
 class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
-  @override
-  void initState() {
-    super.initState();
-    final movieModel =
-        Provider.of<MovieDetailsViewModel>(context, listen: false);
-    final appModel = Provider.of<MyAppModel>(context, listen: false);
-    movieModel.onSessionExpaired = () => appModel.resetSession();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   final movieModel =
+  //       Provider.of<MovieDetailsViewModel>(context, listen: false);
+  //   final appModel = Provider.of<MyAppModel>(context, listen: false);
+  //   movieModel.onSessionExpaired = () => appModel.resetSession();
+  // }
 
   @override
   void didChangeDependencies() {
