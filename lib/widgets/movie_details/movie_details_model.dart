@@ -7,7 +7,7 @@ import 'package:themoviedb/domain/entity/movie_credits.dart';
 import 'package:themoviedb/domain/entity/movie_details.dart';
 
 import '../../domain/api_client/apiClientException.dart';
-import '../../domain/data_providerss/session_data_provider.dart';
+import '../../domain/data_providers/session_data_provider.dart';
 
 class MovieDetailsModel {
   final _apiClient = MovieApiClient();

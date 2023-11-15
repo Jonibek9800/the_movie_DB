@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:themoviedb/domain/api_client/image_downloader.dart';
+import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc.dart';
+import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc_event.dart';
+import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc_state.dart';
 
 import 'movie_list_model.dart';
 
@@ -15,16 +18,14 @@ class MovieListWidget extends StatefulWidget {
 class _MovieListWidgetState extends State<MovieListWidget> {
   @override
   void didChangeDependencies() {
+    // final movies = context.read<MovieListViewModel>().model.movies;
+    // context.watch<CartBloc>().add(AddedCartEvent(movies: movies));
     super.didChangeDependencies();
     context.read<MovieListViewModel>().setupLocal(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final model = context.watch<MovieListViewModel>();
-    // if (model.model.isLoad == true) {
-    //   return const Center(child: CircularProgressIndicator());
-    // }
     return const Stack(children: [
       _MovieListWidget(),
       _SearchWidget(),
@@ -68,7 +69,7 @@ class _MovieListWidget extends StatelessWidget {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.only(top: 75),
         itemCount: model.model.movies.length,
-        itemExtent: 163,
+        itemExtent: 200,
         itemBuilder: (BuildContext context, int index) {
           model.showMovieAtIndex(index);
           return _MovieListRowWidget(
@@ -87,13 +88,14 @@ class _MovieListRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<MovieListViewModel>();
     final imageDownloader = ImageDownloader();
-
     final movie = model.model.movies[index];
     final posterPath = movie.posterPath;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      child: Stack(children: [
-        DecoratedBox(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(7),
+        onTap: () => model.onMovieTab(context, index),
+        child: Ink(
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.black.withOpacity(0.2)),
@@ -139,9 +141,6 @@ class _MovieListRowWidget extends StatelessWidget {
                     ),
                     Text(
                       movie.releaseDate.toString(),
-
-                      /// DateFormat.yMMMMd().format(releaseDate)",
-                      // movie.releaseDate.toString(),
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -157,6 +156,39 @@ class _MovieListRowWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    BlocBuilder<CartBloc, CartBlocState>(
+                      builder: (BuildContext context, state) {
+                        if (state.cartBlocModel.isEmptyMovie(movie) == true) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              TextButton(
+                                onPressed: () {},
+                                child: const Icon(Icons.remove),
+                              ),
+                              const Text("0"),
+                              TextButton(
+                                onPressed: () => context
+                                    .read<CartBloc>()
+                                    .add(AddQuantityEvent(movie: movie)),
+                                child: const Icon(Icons.add),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Align(
+                              alignment: Alignment.centerRight,
+                              child: ElevatedButton(
+                                  onPressed: () => context
+                                      .read<CartBloc>()
+                                      .add(AddCartEvent(movie: movie)),
+                                  child: const Text(
+                                    "Add Cart",
+                                    style: TextStyle(color: Colors.blue),
+                                  )));
+                        }
+                      },
+                    )
                   ],
                 ),
               ),
@@ -166,14 +198,7 @@ class _MovieListRowWidget extends StatelessWidget {
             ],
           ),
         ),
-        Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(7),
-            onTap: () => model.onMovieTab(context, index),
-          ),
-        )
-      ]),
+      ),
     );
   }
 }

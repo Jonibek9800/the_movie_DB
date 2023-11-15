@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/Theme/app_colors.dart';
+import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc.dart';
 import 'package:themoviedb/global_context_helper.dart';
 import 'package:themoviedb/ui/navigator/main_navigator.dart';
-import 'package:themoviedb/widgets/auth/auth_model.dart';
+import 'package:themoviedb/widgets/auth/auth_cubit.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import '../movie_list/movie_list_model.dart';
 
 class MyApp extends StatelessWidget {
   static final mainNavigation = MainNavigation();
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        BlocProvider(create: (_) => CartBloc())
       ],
       child: MaterialApp(
         navigatorKey: GlobalContextHelper.state,

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:themoviedb/domain/data_providerss/session_data_provider.dart';
+import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
 import 'package:themoviedb/global_context_helper.dart';
 import 'package:themoviedb/ui/navigator/main_navigator.dart';
 
