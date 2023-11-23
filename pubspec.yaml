@@ -47,7 +47,7 @@ dependencies:
   flutter_bloc: ^8.0.0
   bloc_concurrency: ^0.2.2
   badges: ^3.1.2
-
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

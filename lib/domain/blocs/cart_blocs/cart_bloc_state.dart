@@ -16,6 +16,11 @@ class AddCartState extends CartBlocState {
       : super(cartBlocModel: cartBlocModel);
 }
 
+class RemoveToCartState extends CartBlocState {
+  RemoveToCartState({required CartBlocModel cartBlocModel})
+      : super(cartBlocModel: cartBlocModel);
+}
+
 class ErrorCartState extends CartBlocState {
   ErrorCartState({required CartBlocModel cartBlocModel})
       : super(cartBlocModel: cartBlocModel);

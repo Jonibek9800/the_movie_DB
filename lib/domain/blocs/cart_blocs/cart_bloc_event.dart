@@ -4,7 +4,7 @@ import 'package:themoviedb/widgets/movie_list/movie_list_model.dart';
 abstract class CartBlocEvent {}
 
 class AddCartEvent extends CartBlocEvent {
-  MovieListRowData? movie;
+  Movie? movie;
 
   AddCartEvent({required this.movie});
 }
@@ -15,13 +15,21 @@ class AddCartEvent extends CartBlocEvent {
 //   AddedCartEvent({required this.movies});
 // }
 
-class DeleteFromCartEvent extends CartBlocEvent {}
+class RemoveFromCartEvent extends CartBlocEvent {
+  Movie? movie;
+
+  RemoveFromCartEvent({required this.movie});
+}
 
 class ErrorCartEvent extends CartBlocEvent {}
 
 class AddQuantityEvent extends CartBlocEvent {
-  MovieListRowData? movie;
+  Movie? movie;
 
   AddQuantityEvent({required this.movie});
 }
-class RemoveQuantityEvent extends CartBlocEvent {}
+class RemoveQuantityEvent extends CartBlocEvent {
+  Movie? movie;
+
+  RemoveQuantityEvent({required this.movie});
+}

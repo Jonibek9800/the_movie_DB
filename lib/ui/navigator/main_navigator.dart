@@ -8,6 +8,7 @@ abstract class MainNavigationRouteNames {
   static const mainScreen = "/main_screen";
   static const movieDetails = "/main_screen/movie_details";
   static const movieTrailer = "/main_screen/movie_details/trailer";
+  static const movieCart = "/main_screen/movie_cart";
 
   static const signUp = "/sign_up";
 }
@@ -20,6 +21,7 @@ class MainNavigation {
     MainNavigationRouteNames.auth: (_) => _screenFactory.makeAuth(),
     MainNavigationRouteNames.mainScreen: (_) => _screenFactory.makeMainScreen(),
     MainNavigationRouteNames.signUp: (_) => _screenFactory.makeSingUp(),
+    MainNavigationRouteNames.movieCart: (_) => _screenFactory.makeCart(),
   };
 
   Route<Object> onGenerateRoute(RouteSettings settings) {

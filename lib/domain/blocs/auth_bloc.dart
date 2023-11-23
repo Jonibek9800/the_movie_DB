@@ -16,13 +16,6 @@ class AuthLoginEvent extends AuthEvent {
   final String password;
 
   AuthLoginEvent({required this.login, required this.password});
-}
-
-// enum AuthStateStatus {
-//   authorized,
-//   notAuthorized,
-//   inProgress,
-// }
 
 abstract class AuthState {}
 

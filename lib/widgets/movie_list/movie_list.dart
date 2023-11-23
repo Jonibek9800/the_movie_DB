@@ -18,8 +18,6 @@ class MovieListWidget extends StatefulWidget {
 class _MovieListWidgetState extends State<MovieListWidget> {
   @override
   void didChangeDependencies() {
-    // final movies = context.read<MovieListViewModel>().model.movies;
-    // context.watch<CartBloc>().add(AddedCartEvent(movies: movies));
     super.didChangeDependencies();
     context.read<MovieListViewModel>().setupLocal(context);
   }
@@ -45,7 +43,6 @@ class _SearchWidget extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: TextField(
         onChanged: model.searchMovie,
-        // controller: _searchController,
         decoration: InputDecoration(
             labelText: 'Search...',
             filled: true,
@@ -140,7 +137,7 @@ class _MovieListRowWidget extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      movie.releaseDate.toString(),
+                      model.stringFromDate(movie.releaseDate),
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
@@ -163,10 +160,12 @@ class _MovieListRowWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () => context
+                                    .read<CartBloc>()
+                                    .add(RemoveQuantityEvent(movie: movie)),
                                 child: const Icon(Icons.remove),
                               ),
-                              const Text("0"),
+                              Text("${state.cartBlocModel.movieQuanti}"),
                               TextButton(
                                 onPressed: () => context
                                     .read<CartBloc>()

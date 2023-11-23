@@ -6,6 +6,7 @@ import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc.dart';
 import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc_state.dart';
 import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
 import 'package:themoviedb/domain/factories/screen_factory.dart';
+import 'package:themoviedb/ui/navigator/main_navigator.dart';
 import 'package:themoviedb/widgets/navigation/botom_nav_widget.dart';
 import 'package:themoviedb/widgets/navigation/drawer_nav_widget.dart';
 
@@ -25,6 +26,12 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       _selectedPage = index;
     });
   }
+
+  // @override
+  // void initState() {
+  //   context.read<CartBloc>().state.cartBlocModel.getMoviesFromStorage();
+  //   super.initState();
+  // }
 
   final _screenFactory = ScreenFactorey();
 
@@ -56,9 +63,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
               return Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: IconButton(
-                  onPressed: () => [],
-                  icon:  badges.Badge(
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed(MainNavigationRouteNames.movieCart),
+                  icon: badges.Badge(
                     badgeContent: Text('${currentState.cartQty()}'),
+                    showBadge: currentState.cartQty() == 0 ? false : true,
                     child: const Icon(Icons.shopping_cart),
                   ),
                 ),
@@ -77,15 +86,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             _screenFactory.makeHome(),
             _screenFactory.makeMovieList(),
             _screenFactory.makeSerials()
-            // Text(
-            //   'Главная',
-            //   style: optionStyle,
-            // ),
-            // MovieListWidget(),
-            // Text(
-            //   'Сериалы',
-            //   style: optionStyle,
-            // ),
           ],
         ),
         bottomNavigationBar: BotomNavigationWidget(

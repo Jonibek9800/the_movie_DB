@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:themoviedb/widgets/auth/auth_cubit.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
+import 'package:themoviedb/widgets/cart/cart_widget.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
@@ -37,11 +38,6 @@ class ScreenFactorey {
           AuthViewCubit(AuthViewCubitFormFillInProgressState(), authBloc),
       child: const AuthWidget(),
     );
-
-    // return ChangeNotifierProvider(
-    //   create: (_) => AuthViewModel(),
-    //   child: const AuthWidget(),
-    // );
   }
 
   Widget makeMainScreen() {
@@ -81,5 +77,8 @@ class ScreenFactorey {
 
   Widget makeSerials() {
     return const Text("Serials");
+  }
+  Widget makeCart() {
+    return const CartWidget();
   }
 }

@@ -8,21 +8,6 @@ import 'package:themoviedb/library/pagination.dart';
 import '../../domain/entity/movies.dart';
 import '../../ui/navigator/main_navigator.dart';
 
-class MovieListRowData {
-  final int id;
-  final String? posterPath;
-  final String? title;
-  final String? releaseDate;
-  final String? overview;
-
-  const MovieListRowData(
-      {required this.id,
-      required this.posterPath,
-      required this.releaseDate,
-      required this.title,
-      required this.overview});
-}
-
 class MovieListModel {
   final _movieService = MovieService();
   late final Pagination<Movie> _popularMoviePagination;
@@ -30,9 +15,9 @@ class MovieListModel {
   Timer? searchDebounce;
   String _locale = '';
 
-  List<MovieListRowData> _movies = [];
+  List<Movie> _movies = [];
 
-  List<MovieListRowData> get movies => _movies;
+  List<Movie> get movies => _movies;
   String? searchQuery;
 
   MovieListModel() {
@@ -71,7 +56,6 @@ class MovieListViewModel extends ChangeNotifier {
     if (model._locale == local) return;
     model._locale = local;
     _dateFormat = DateFormat.yMMMMd(local);
-
     await _resetList();
   }
 
@@ -85,26 +69,12 @@ class MovieListViewModel extends ChangeNotifier {
   Future<void> _loadNextPage() async {
     if (isSearchMode) {
       await model._searchMoviePagination.loadNextPage();
-      model._movies =
-          model._searchMoviePagination.data.map(_makeRowData).toList();
+      model._movies = model._searchMoviePagination.data;
     } else {
       await model._popularMoviePagination.loadNextPage();
-      model._movies =
-          model._popularMoviePagination.data.map(_makeRowData).toList();
+      model._movies = model._popularMoviePagination.data;
     }
     notifyListeners();
-  }
-
-  MovieListRowData _makeRowData(Movie movie) {
-    final releaseDate = movie.releaseDate;
-    final dateForString =
-        releaseDate != null ? _dateFormat.format(releaseDate) : '';
-    return MovieListRowData(
-        id: movie.id ?? 0,
-        posterPath: movie.posterPath,
-        releaseDate: dateForString,
-        title: movie.title,
-        overview: movie.overview);
   }
 
   void onMovieTab(BuildContext context, int index) {
@@ -117,8 +87,6 @@ class MovieListViewModel extends ChangeNotifier {
     model.searchDebounce?.cancel();
     model.searchDebounce = Timer(const Duration(milliseconds: 300), () async {
       final searchQuery = text.isNotEmpty ? text : null;
-      print(searchQuery);
-      print(model.searchQuery);
       if (searchQuery == model.searchQuery) return;
       model.searchQuery = searchQuery;
       model._movies.clear();

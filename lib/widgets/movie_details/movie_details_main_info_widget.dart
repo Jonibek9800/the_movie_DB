@@ -139,7 +139,6 @@ class _ScoreWidget extends StatelessWidget {
     final model = Provider.of<MovieDetailsViewModel>(context).model;
     final trailers = model.moviesDatails?.videos?.results
         ?.where((video) => video.type == "Trailer" && video.site == "YouTube");
-    ;
     final trailerKey =
         trailers != null && trailers.isNotEmpty ? trailers.first.key : null;
     double percent = model.moviesDatails!.voteAverage! * 10 ?? 0.0;

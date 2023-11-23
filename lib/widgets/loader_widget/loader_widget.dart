@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:themoviedb/domain/blocs/cart_blocs/cart_bloc.dart';
 import 'package:themoviedb/widgets/loader_widget/loader_view_cubit.dart';
 
 import '../../ui/navigator/main_navigator.dart';
@@ -28,5 +29,6 @@ class LoaderWidget extends StatelessWidget {
         ? MainNavigationRouteNames.mainScreen
         : MainNavigationRouteNames.auth;
     Navigator.of(context).pushReplacementNamed(nextScreen);
+    context.read<CartBloc>().state.cartBlocModel.getMoviesFromStorage();
   }
 }
