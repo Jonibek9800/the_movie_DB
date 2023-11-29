@@ -16,6 +16,7 @@ class AuthLoginEvent extends AuthEvent {
   final String password;
 
   AuthLoginEvent({required this.login, required this.password});
+}
 
 abstract class AuthState {}
 
